@@ -8,9 +8,9 @@ import (
 	"time"
 
 	"github.com/kataras/iris/v12/context"
-	"github.com/zhxx123/gomonitor/config"
-	"github.com/zhxx123/gomonitor/service/stats"
 	"github.com/sirupsen/logrus"
+	"github.com/zhxx123/gomonitor/model"
+	"github.com/zhxx123/gomonitor/service/stats"
 )
 
 // 获取 请求路径
@@ -37,10 +37,7 @@ func APIStatsD() context.Handler {
 		t := time.Now()
 		ctx.Next()
 
-		if config.StatsDConfig.URL == "" {
-			return
-		}
-		if config.StatsDConfig.Enabled != true {
+		if model.StatsdURL == "" {
 			return
 		}
 		duration := time.Since(t)

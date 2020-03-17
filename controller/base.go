@@ -7,10 +7,6 @@ type ApiJson struct {
 }
 
 func ApiResource(status int, objects interface{}, msg string) (apijson *ApiJson) {
-	// if objects == nil {
-	// 	apijson = &ApiJson{Status: status, Data: map[string]interface{}{}, Msg: msg}
-	// 	return
-	// }
 	apijson = &ApiJson{Status: status, Data: objects, Msg: msg}
 	return
 }

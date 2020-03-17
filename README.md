@@ -1,15 +1,76 @@
-### 环境配置
-#### mongodb
-###### 安装
+### golang web 监控
+
+基于 golang iris web 框架构建
+
+
+#### 客户端接口模拟请求代码
 ```
-wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
-echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
-sudo apt-get update
-sudo apt-get install -y mongodb-org
-```
-###### 重启
-sudo service mongod start
-#### 安装 redis
-```
-sudo apt-get install redis-server
+package main
+
+import (
+	"fmt"
+	"io/ioutil"
+	"math/rand"
+	"net/http"
+	"time"
+)
+
+func GetRandNumInt(maxnum int) int {
+	rand.Seed(time.Now().UnixNano())
+	ikind := rand.Intn(maxnum)
+	return ikind
+}
+func GetMethod() {
+	api := []string{"/article/list", "/article/info"}
+	//生成要访问的url
+	url := "http://127.0.0.1:7000/api"
+
+	for {
+		time.Sleep(500 * time.Millisecond)
+
+		randomIndex := GetRandNumInt(2)
+		reqPath := fmt.Sprintf("%s%s", url, api[randomIndex])
+		resp, err := http.Get(reqPath)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		defer resp.Body.Close()
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			fmt.Println(body, err)
+		}
+		fmt.Printf("%s %d\n", reqPath, resp.StatusCode)
+
+	}
+}
+func PostMethod() {
+	api := []string{"/login", "/logout"}
+	//生成要访问的url
+	url := "http://127.0.0.1:7000/api"
+
+	for {
+		time.Sleep(500 * time.Millisecond)
+
+		randomIndex := GetRandNumInt(2)
+		reqPath := fmt.Sprintf("%s%s", url, api[randomIndex])
+		resp, err := http.Post(reqPath, "", nil)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		defer resp.Body.Close()
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			fmt.Println(body, err)
+		}
+		fmt.Printf("%s %d\n", reqPath, resp.StatusCode)
+
+	}
+}
+func main() {
+	go GetMethod()
+	PostMethod()
+}
+
 ```
