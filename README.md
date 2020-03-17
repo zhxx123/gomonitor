@@ -1,7 +1,10 @@
 ### golang web 监控
 
-基于 golang iris web 框架构建
+基于 golang iris web 框架构建,构建 web api 监控系统，客户端使用 Statsd(go 语言版)
 
+监控系统基于 Grafana、Telegraf、InfluxDB
+
+相关文章地址
 
 #### 客户端接口模拟请求代码
 ```
